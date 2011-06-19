@@ -1,24 +1,33 @@
 from Player import player
+from Tournament import Tournament
+from random import randint
 
 if __name__ == '__main__':
-    a = player('Stan', 'Marsh')
-    b = player('Eric', 'Cartman')
-    c = player('Kyle', 'Broflowski')
-    d = player('Kenny', 'McCormick')
+    event = Tournament('Test Event')
+    for x in open('player_names.txt').readlines():
+        x = x.strip('\n')
+        first, last = x.split(' ')
+        event.add_player(player(first, last))
+    event.generate_pairings()
+    print 'Round 1:'
+    event.list_tables()
 
-    # round 1
-    a.record_match(b, 2, 1)
-    b.record_match(a, 1, 2)
-    c.record_match(d, 2, 0)
-    d.record_match(c, 0, 2)
+    # generate results
+    for x in xrange(len(event.tables)):
+        wins, losses, draws = 0, 0, 0
 
-    # round 2
-    a.record_match(c, 1, 2)
-    c.record_match(a, 2, 1)
-    b.record_match(d, 1, 0, 1)
-    d.record_match(b, 0, 1, 1)
+        while (wins+losses) < 3:
+            result = randint(1,100)
+            if result <= 48:
+                wins += 1
+            elif result >= 53:
+                losses += 1
+            else:
+                draws += 1
 
-    print a
-    print b
-    print c
-    print d
+        event.report_match(x, wins, losses, draws)
+
+    print 'Round 2:'
+    event.generate_pairings()
+    event.list_tables()
+

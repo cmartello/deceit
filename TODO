@@ -1,0 +1,5 @@
+* implement byes
+* make tables index from zero
+* further cleanup of output from both player and tournament modules
+    - Table listings should be by last name and duplicated
+* maybe encapsulte tables in their own class?
