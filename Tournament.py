@@ -5,6 +5,37 @@ def point_sort(x, y):
     return x.match_points() - y.match_points()
 
 
+def tiebreaker_sort(x, y):
+    # match points
+    xmp, ymp = x.match_points(), y.match_points()
+    if xmp != ymp:
+        return xmp - ymp
+
+    # opponent's match-win percentage
+    xomw, yomw = x.opp_match_win_percent(), y.opp_match_win_percent()
+    if xomw > yomw:
+        return 1
+    elif xomw < yomw:
+        return -1
+
+    # game-win percentage
+    xgwp, ygwp = x.game_win_percent(), y.game_win_percent()
+    if xgwp > ygwp:
+        return 1
+    elif xgwp < ygwp:
+        return -1
+
+    # opponent's game-win percentage
+    xogwp, yogwp = x.opp_game_win_percent(), y.opp_game_win_percent()
+    if xogwp > yogwp:
+        return 1
+    elif xogwp < yogwp:
+        return -1
+
+    # unbroken tie
+    return 0
+
+
 class Tournament:
     def __init__(self, event_name, regnum = 0):
         self.players = []

@@ -26,6 +26,8 @@ class player:
             self.matches_won, self.matches_lost, self.matches_drawn)
         print 'Games : (%d) %d - %d - %d' % ( self.game_points(), \
             self.games_won, self.games_lost, self.games_drawn)
+        for x in self.opponents:
+            print x[1], '-', x[2], x[0].lastname, ',', x[0].firstname
 
     
     def record_match(self, opponent, win, lose, draw=0):
@@ -71,3 +73,10 @@ class player:
             return 1.0/3
         else:
             return mwp
+
+    def opp_match_win_percent(self):
+        return sum([x[0].match_win_percent() for x in self.opponents]) / len(self.opponents)
+
+
+    def opp_game_win_percent(self):
+        return sum([x[0].game_win_percent() for x in self.opponents]) / len(self.opponents)
