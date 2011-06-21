@@ -45,6 +45,7 @@ class player:
         self.games_lost += lose
         self.games_drawn += draw
 
+
     def game_points(self):
         return self.games_won * 3 + self.games_drawn * 1
 

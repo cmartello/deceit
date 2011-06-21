@@ -1,4 +1,7 @@
 from random import shuffle
+from Table import Table
+from Player import player
+
 
 def point_sort(x, y):
     """Used by generate_pairings to sort players by points."""
@@ -38,7 +41,7 @@ def tiebreaker_sort(x, y):
 
 class Tournament:
     def __init__(self, event_name, regnum = 0):
-        self.players = []
+        self.players = [player('BYE', 'BYE')]
         self.state = 'signup'
         self.round = 0
 
@@ -51,32 +54,43 @@ class Tournament:
 
 
     def generate_pairings(self):
+        # don't regenerate pairings mid-round!
+        if self.state == 'playing':
+            return -1
+
         self.tables = []
-        self.round += 1
-        a = self.players[:]
+        if len(self.players[1:]) % 2 == 0:
+            a = self.players[1:]
+        else:
+            a = self.players[:]
         shuffle(a)
         a.sort(point_sort)
+        self.round += 1
         while len(a) > 1:
-            self.tables.append((a.pop(), a.pop()))
+            self.tables.append(Table(a.pop(), a.pop()))
 
 
-    def report_match(self, tableno, wins, losses, draws):
+    def report_match(self, tableno, wins, losses, draws=0):
         """Reports the match for the specified table as wins-losses,draws
         for the left-hand side of the table.  The right-hand player's
-        scores are derived from this."""
+        scores are derived from this.
+        """
         if self.round < 1:
             return -1
-        self.tables[tableno][0].record_match(self.tables[tableno][1],\
-            wins, losses, draws)
-
-        self.tables[tableno][1].record_match(self.tables[tableno][0],\
-            losses, wins, draws)
+        self.tables[tableno].report_match(wins, losses, draws)
 
 
-    def list_tables(self):
+    def list_tables(self, all=False):
+        """Lists the tables that are still playing in the event.  If all
+        is True, it will instead list all tables."""
+
         if self.round < 1:
             return -1
 
-        for x in xrange(len(self.tables)):
-            print x, self.tables[x][0], self.tables[x][1]
-
+        if all == True:
+            for x in xrange(len(self.tables)):
+                print x, self.tables[x]
+        elif all == False:
+            for x in xrange(len(self.tables)):
+                if self.tables[x].status == 'Active':
+                    print x, self.tables[x]

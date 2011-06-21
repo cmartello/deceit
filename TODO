@@ -3,5 +3,6 @@
 * further cleanup of output from both player and tournament modules
     - Table listings should be by last name and duplicated
 * maybe encapsulte tables in their own class?
+* maybe store tables in the tournament class as an array of arrays?
 * the helper functions for player sorting are backwards but otherwise correct.
 
