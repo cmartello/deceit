@@ -58,7 +58,8 @@ class Tournament:
         if self.state == 'playing':
             return -1
 
-        self.tables = []
+        self.tables = [Table(player('nobody', 'nobody'), player('nobody', 'nobody'))]
+
         if len(self.players[1:]) % 2 == 0:
             a = self.players[1:]
         else:
@@ -88,9 +89,9 @@ class Tournament:
             return -1
 
         if all == True:
-            for x in xrange(len(self.tables)):
+            for x in xrange(1,len(self.tables)):
                 print x, self.tables[x]
         elif all == False:
-            for x in xrange(len(self.tables)):
+            for x in xrange(1,len(self.tables)):
                 if self.tables[x].status == 'Active':
                     print x, self.tables[x]
