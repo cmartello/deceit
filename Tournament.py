@@ -39,6 +39,10 @@ def tiebreaker_sort(x, y):
     return 0
 
 
+def table_sort(x, y):
+    return cmp(x.left.lastname, y.left.lastname)
+
+
 class Tournament:
     def __init__(self, event_name, regnum = 0):
         self.players = [player('BYE', 'BYE')]
@@ -58,7 +62,7 @@ class Tournament:
         if self.state == 'playing':
             return -1
 
-        self.tables = [Table(player('nobody', 'nobody'), player('nobody', 'nobody'))]
+        self.tables = [Table(player('NOBODY', 'NOBODY'), player('NOBODY', 'NOBODY'))]
 
         if len(self.players[1:]) % 2 == 0:
             a = self.players[1:]
@@ -90,8 +94,22 @@ class Tournament:
 
         if all == True:
             for x in xrange(1,len(self.tables)):
-                print x, self.tables[x]
+                print '%3d' % x, self.tables[x]
         elif all == False:
             for x in xrange(1,len(self.tables)):
                 if self.tables[x].status == 'Active':
-                    print x, self.tables[x]
+                    print '%3d' % x, self.tables[x]
+
+
+    def list_pairings(self):
+        """Prints out a list of all pairings with tables duplicated so that
+        players can find their proper table easier."""
+        a = self.tables[1:]
+        b = [a[x].inverse_copy() for x in xrange(len(a))]
+        for x in xrange(len(a)):
+            a[x].number = x + 1
+            b[x].number = x + 1
+        c = a + b
+        c.sort(table_sort)
+        for x in c:
+            print '%3d' % x.number, x
