@@ -4,12 +4,19 @@ class Table:
         self.right = p2
         self.status = 'Active'
 
+        # The dummy player BYE gets an auto-loss
+        if self.left.firstname == 'BYE':
+            self.report_match(0,2)
+
+        if self.right.firstname == 'BYE':
+            self.report_match(2,0)
+
 
     def report_match(self, wins, losses, draws=0):
         """Reports the match for the specified table as wins-losses,draws
         for the left-hand side of the table.  The right-hand player's
         scores are derived from this."""
-        if self.status == 'Locked':
+        if self.status == 'Locked' or self.status == 'Reported':
             return -1
         self.left.record_match(self.right, wins, losses, draws)
         self.right.record_match(self.left, losses, wins, draws)

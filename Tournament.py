@@ -62,6 +62,7 @@ class Tournament:
         if self.state == 'playing':
             return -1
 
+        # Dummy table; only in place to make tables index from 1
         self.tables = [Table(player('NOBODY', 'NOBODY'), player('NOBODY', 'NOBODY'))]
 
         if len(self.players[1:]) % 2 == 0:

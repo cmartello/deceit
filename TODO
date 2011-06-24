@@ -1,4 +1,3 @@
-* implement byes
 * further cleanup of output from both player and tournament modules
 * maybe store tables in the tournament class as an array of arrays?
 * the helper functions for player sorting are backwards but otherwise correct.
