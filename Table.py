@@ -1,5 +1,10 @@
 class Table:
+    """Simple class representing each match.  Contains a 'left' and 'right'
+    player object and a couple helper functions."""
+
     def __init__(self, p1, p2):
+        """Creates a table object from two supplied player objects."""
+
         self.left = p1
         self.right = p2
         self.status = 'Active'
@@ -16,6 +21,7 @@ class Table:
         """Reports the match for the specified table as wins-losses,draws
         for the left-hand side of the table.  The right-hand player's
         scores are derived from this."""
+
         if self.status == 'Locked' or self.status == 'Reported':
             return -1
         self.left.record_match(self.right, wins, losses, draws)
@@ -35,6 +41,7 @@ class Table:
     def lock_table(self):
         """Called when going to a new round.  Merely prevents results from
         being altered further."""
+
         self.status = 'Locked'
 
 
@@ -42,6 +49,7 @@ class Table:
         """When generating a printable pairings list, it is preferable to
         have all tables listed twice, one with the positions reversed,
         allowing players to find their table by last name quickly."""
+
         return Table(self.right, self.left)
 
 

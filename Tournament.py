@@ -9,6 +9,7 @@ def point_sort(x, y):
 
 
 def tiebreaker_sort(x, y):
+    """Used for the top-8 break or final tiebreaker sort."""
     # match points
     xmp, ymp = x.match_points(), y.match_points()
     if xmp != ymp:
@@ -40,17 +41,25 @@ def tiebreaker_sort(x, y):
 
 
 def table_sort(x, y):
+    """A simple last-name sort for Table objects."""
     return cmp(x.left.lastname, y.left.lastname)
 
 
 class Tournament:
+    """Module that encapsulates all relevant tournament functions."""
+
     def __init__(self, event_name, regnum = 0):
+        """Starts a tournament.  Requires a name for the event, and you may
+        optionally supply a registration number for DCI-sanctioned events.
+        Note that the year and day fields will be automatically added, though
+        this code is still in the future."""
         self.players = [player('BYE', 'BYE')]
         self.state = 'signup'
         self.round = 0
 
 
     def add_player(self, player):
+        """Adds a player object to the tournament's list of players."""
         if self.state == 'signup':
             self.players.append(player)
         else:
@@ -58,6 +67,11 @@ class Tournament:
 
 
     def generate_pairings(self):
+        """Generates pairings for the current round, first by shuffling the
+        player list and then sorting by points.  The player with the lowest
+        point total when there's an uneven number of players will get a bye.
+        """
+
         # don't regenerate pairings mid-round!
         if self.state == 'playing':
             return -1
