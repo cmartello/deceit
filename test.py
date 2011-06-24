@@ -10,7 +10,7 @@ if __name__ == '__main__':
         event.add_player(player(first, last))
     event.generate_pairings()
     print 'Round ', event.round
-    event.list_tables(all=True)
+    event.list_tables(showall=True)
 
     # generate results
     for x in xrange(4):
@@ -30,4 +30,4 @@ if __name__ == '__main__':
 
         event.generate_pairings()
         print 'Round :', event.round
-        event.list_tables(all=True)
+        event.list_tables(showall=True)

@@ -1,3 +1,5 @@
+"""Contains the player object, the key of the program."""
+
 class player:
     """An object that tracks a player's status within a tournament.  Comes
     with a number of helper functions for determining scores beyond the
@@ -25,7 +27,8 @@ class player:
 
 
     def __str__(self):
-        return '(%d-%d) %s, %s' % (self.matches_won, self.matches_lost, self.lastname, self.firstname)
+        return '(%d-%d) %s, %s' % (self.matches_won, self.matches_lost, \
+            self.lastname, self.firstname)
 
     
     def long_report(self):
@@ -37,8 +40,8 @@ class player:
             self.matches_won, self.matches_lost, self.matches_drawn)
         print 'Games : (%d) %d - %d - %d' % ( self.game_points(), \
             self.games_won, self.games_lost, self.games_drawn)
-        for x in self.opponents:
-            print x[1], '-', x[2], x[0].lastname, ',', x[0].firstname
+        for opp in self.opponents:
+            print opp[1], '-', opp[2], opp[0].lastname, ',', opp[0].firstname
 
     
     def record_match(self, opponent, win, lose, draw=0):
@@ -100,8 +103,16 @@ class player:
             return mwp
 
     def opp_match_win_percent(self):
-        return sum([x[0].match_win_percent() for x in self.opponents]) / len(self.opponents)
+        """Returns the average of this player's opponent's match-win
+        percentages."""
+
+        return sum([x[0].match_win_percent() for x in self.opponents])\
+            / len(self.opponents)
 
 
     def opp_game_win_percent(self):
-        return sum([x[0].game_win_percent() for x in self.opponents]) / len(self.opponents)
+        """Returns the average of this player's opponent's game-win
+        percentages."""
+
+        return sum([x[0].game_win_percent() for x in self.opponents])\
+            / len(self.opponents)

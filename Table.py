@@ -1,20 +1,24 @@
+"""The Table module for deceit is used for tracking matches and aids in
+reporting them.  Contains some test code at the very end.
+"""
+
 class Table:
     """Simple class representing each match.  Contains a 'left' and 'right'
     player object and a couple helper functions."""
 
-    def __init__(self, p1, p2):
+    def __init__(self, left, right):
         """Creates a table object from two supplied player objects."""
 
-        self.left = p1
-        self.right = p2
+        self.left = left
+        self.right = right
         self.status = 'Active'
 
         # The dummy player BYE gets an auto-loss
         if self.left.firstname == 'BYE':
-            self.report_match(0,2)
+            self.report_match(0, 2)
 
         if self.right.firstname == 'BYE':
-            self.report_match(2,0)
+            self.report_match(2, 0)
 
 
     def report_match(self, wins, losses, draws=0):
@@ -30,12 +34,16 @@ class Table:
 
 
     def __str__(self):
-        a = str(self.left.match_points()) + ' ' + self.left.lastname + ', ' + self.left.firstname
-        b = str(self.right.match_points()) + ' ' + self.right.lastname + ', ' + self.right.firstname
+        left = str(self.left.match_points()) + ' ' +\
+            self.left.lastname + ', ' + self.left.firstname
+        right = str(self.right.match_points()) + ' ' +\
+            self.right.lastname + ', ' + self.right.firstname
 
-        a = '%2d %s, %s' % (self.left.match_points(), self.left.lastname, self.left.firstname)
-        b = '%2d %s, %s' % (self.right.match_points(), self.right.lastname, self.right.firstname)
-        return '%-32s %-32s' % (a, b)
+        left = '%2d %s, %s' % (self.left.match_points(), \
+            self.left.lastname, self.left.firstname)
+        right = '%2d %s, %s' % (self.right.match_points(), \
+            self.right.lastname, self.right.firstname)
+        return '%-32s %-32s' % (left, right)
 
 
     def lock_table(self):
@@ -56,13 +64,13 @@ class Table:
 # test code
 if __name__ == '__main__':
     from Player import player
-    a = player('John', 'Cleese')
-    b = player('Eric', 'Idle')
+    PLAYER1 = player('John', 'Cleese')
+    PLAYER2 = player('Eric', 'Idle')
     print 'Before:'
-    c = Table(a,b)
-    print c
+    TESTTABLE = Table(PLAYER1, PLAYER2)
+    print TESTTABLE
     print 'After:'
-    c.report_match(2,1,0)
-    print c
+    TESTTABLE.report_match(2, 1, 0)
+    print TESTTABLE
     print 'Inverse:'
-    print c.inverse_copy()
+    print TESTTABLE.inverse_copy()
