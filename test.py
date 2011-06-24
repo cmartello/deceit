@@ -17,11 +17,11 @@ if __name__ == '__main__':
         for x in xrange(len(event.tables)):
             wins, losses, draws = 0, 0, 0
 
-            while (wins+losses) < 3:
+            while (wins+losses+draws) < 3:
                 result = randint(1,100)
-                if result <= 48:
+                if result <= 45:
                     wins += 1
-                elif result >= 53:
+                elif result >= 55:
                     losses += 1
                 else:
                     draws += 1
