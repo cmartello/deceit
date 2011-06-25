@@ -1,6 +1,6 @@
 """Contains the player object, the key of the program."""
 
-class player:
+class Player:
     """An object that tracks a player's status within a tournament.  Comes
     with a number of helper functions for determining scores beyond the
     basics.  A player must be given a first and last name, and a DCI PIN is

@@ -3,7 +3,7 @@ that is likely to happen within a typical tournament."""
 
 from random import shuffle
 from Table import Table
-from Player import player
+from Player import Player
 
 
 def point_sort(plx, ply):
@@ -61,7 +61,7 @@ class Tournament:
 
         self.event_name = event_name
         self.regnum = regnum
-        self.players = [player('BYE', 'BYE')]
+        self.players = [Player('BYE', 'BYE')]
         self.state = 'signup'
         self.round = 0
 
@@ -85,7 +85,7 @@ class Tournament:
             return -1
 
         # Dummy table; only in place to make tables index from 1
-        nobody = player('NOBODY', 'NOBODY')
+        nobody = Player('NOBODY', 'NOBODY')
         self.tables = [Table(nobody, nobody)]
 
         if len(self.players[1:]) % 2 == 0:

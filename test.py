@@ -1,4 +1,4 @@
-from Player import player
+from Player import Player
 from Tournament import Tournament
 from random import randint
 
@@ -7,7 +7,7 @@ if __name__ == '__main__':
     for x in open('player_names.txt').readlines():
         x = x.strip('\n')
         first, last = x.split(' ')
-        event.add_player(player(first, last))
+        event.add_player(Player(first, last))
     event.generate_pairings()
     print 'Round ', event.round
     event.list_tables(showall=True)

@@ -64,8 +64,8 @@ class Table:
 # test code
 if __name__ == '__main__':
     from Player import player
-    PLAYER1 = player('John', 'Cleese')
-    PLAYER2 = player('Eric', 'Idle')
+    PLAYER1 = Player('John', 'Cleese')
+    PLAYER2 = Player('Eric', 'Idle')
     print 'Before:'
     TESTTABLE = Table(PLAYER1, PLAYER2)
     print TESTTABLE
