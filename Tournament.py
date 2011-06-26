@@ -75,6 +75,10 @@ class Tournament:
 
 
     def start_round(self):
+        """Starts a new round if there's no active tables and will complain
+        if there are any tables still active.  Otherwise, it just calls 
+        generate_pairings and increments the round counter."""
+
         if self.round != 0:
             if len([x for x in self.tables[self.round] if x.status == 'Active']) > 0:
                 print "Error: Can't start new round, current one has active tables."
@@ -84,6 +88,8 @@ class Tournament:
 
 
     def finish_round(self):
+        """If there are no currently active tables, finish_round simply locks
+        all tables."""
         active_tables = [x for x in self.tables[self.round] if x.status == 'Active']
         if len(active_tables) > 0:
             print "Error: Can't finish round, current one has active tables."
@@ -162,6 +168,8 @@ class Tournament:
 
 
     def top_players(self, players=8):
+        """Performs a tiebreaker and lists the top n players where n is
+        typically 8."""
         all_players = self.players[:]
         all_players.sort(tiebreaker_sort)
         for player in all_players[-8:]:
