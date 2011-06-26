@@ -23,7 +23,9 @@ if __name__ == '__main__':
                 match.report_match(2,0)
             if y >= 50 and y < 75:
                 match.report_match(1,2)
-            if y >= 75 and y < 100:
+            if y >= 75 and y <= 100:
                 match.report_match(0,2)
 
         event.finish_round()
+
+    event.top_players()

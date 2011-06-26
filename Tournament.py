@@ -82,11 +82,15 @@ class Tournament:
         self.generate_pairings()
         self.round += 1
 
+
     def finish_round(self):
-        if len([x for x in self.tables[self.round] if x.status == 'Active']) > 0:
+        active_tables = [x for x in self.tables[self.round] if x.status == 'Active']
+        if len(active_tables) > 0:
             print "Error: Can't finish round, current one has active tables."
+            for table in active_tables:
+                print table
             return -1
-        for x in self.tables[self.round]:
+        for table in self.tables[self.round]:
             x.lock_table()
 
 
@@ -155,3 +159,10 @@ class Tournament:
         all_tables.sort(table_sort)
         for table in all_tables:
             print '%3d' % table.number, table
+
+
+    def top_players(self, players=8):
+        all_players = self.players[:]
+        all_players.sort(tiebreaker_sort)
+        for player in all_players[-8:]:
+            print player
