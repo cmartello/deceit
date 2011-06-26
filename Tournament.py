@@ -68,6 +68,7 @@ class Tournament:
 
     def add_player(self, u_player):
         """Adds a player object to the tournament's list of players."""
+
         if self.round < 1:
             self.players.append(u_player)
         else:
@@ -90,6 +91,7 @@ class Tournament:
     def finish_round(self):
         """If there are no currently active tables, finish_round simply locks
         all tables."""
+
         active_tables = [x for x in self.tables[self.round] if x.status == 'Active']
         if len(active_tables) > 0:
             print "Error: Can't finish round, current one has active tables."
@@ -156,6 +158,7 @@ class Tournament:
     def list_pairings(self):
         """Prints out a list of all pairings with tables duplicated so that
         players can find their proper table easier."""
+
         atables = self.tables[self.round][1:]
         btables = [atables[x].inverse_copy() for x in xrange(len(atables))]
         for count in xrange(len(atables)):
@@ -170,6 +173,7 @@ class Tournament:
     def top_players(self, players=8):
         """Performs a tiebreaker and lists the top n players where n is
         typically 8."""
+
         all_players = self.players[:]
         all_players.sort(tiebreaker_sort)
         for player in all_players[-8:]:
