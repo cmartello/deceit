@@ -62,16 +62,32 @@ class Tournament:
         self.event_name = event_name
         self.regnum = regnum
         self.players = [Player('BYE', 'BYE')]
-        self.state = 'signup'
         self.round = 0
+        self.tables = ['Nothing']
 
 
     def add_player(self, u_player):
         """Adds a player object to the tournament's list of players."""
-        if self.state == 'signup':
+        if self.round < 1:
             self.players.append(u_player)
         else:
             return -1
+
+
+    def start_round(self):
+        if self.round != 0:
+            if len([x for x in self.tables[self.round] if x.status == 'Active']) > 0:
+                print "Error: Can't start new round, current one has active tables."
+                return -1
+        self.generate_pairings()
+        self.round += 1
+
+    def finish_round(self):
+        if len([x for x in self.tables[self.round] if x.status == 'Active']) > 0:
+            print "Error: Can't finish round, current one has active tables."
+            return -1
+        for x in self.tables[self.round]:
+            x.lock_table()
 
 
     def generate_pairings(self):
@@ -81,12 +97,14 @@ class Tournament:
         """
 
         # don't regenerate pairings mid-round!
-        if self.state == 'playing':
-            return -1
+        if self.round != 0:
+            if len([x for x in self.tables[self.round] if x.status == 'Active']) > 0:
+                print 'Error: self.tables[', self.round, '] still has active tables.'
+                return -1
 
         # Dummy table; only in place to make tables index from 1
         nobody = Player('NOBODY', 'NOBODY')
-        self.tables = [Table(nobody, nobody)]
+        pairings = [Table(nobody, nobody)]
 
         if len(self.players[1:]) % 2 == 0:
             plist = self.players[1:]
@@ -94,9 +112,9 @@ class Tournament:
             plist = self.players[:]
         shuffle(plist)
         plist.sort(point_sort)
-        self.round += 1
         while len(plist) > 1:
-            self.tables.append(Table(plist.pop(), plist.pop()))
+            pairings.append(Table(plist.pop(), plist.pop()))
+        self.tables.append(pairings)
 
 
     def report_match(self, tableno, wins, losses, draws=0):
@@ -106,7 +124,7 @@ class Tournament:
         """
         if self.round < 1:
             return -1
-        self.tables[tableno].report_match(wins, losses, draws)
+        self.tables[self.round][tableno].report_match(wins, losses, draws)
 
 
     def list_tables(self, showall=False):
@@ -117,18 +135,18 @@ class Tournament:
             return -1
 
         if showall == True:
-            for tnum in xrange(1, len(self.tables)):
-                print '%3d' % tnum, self.tables[tnum]
+            for tnum in xrange(1, len(self.tables[self.round])):
+                print '%3d' % tnum, self.tables[self.round][tnum]
         elif showall == False:
-            for tnum in xrange(1, len(self.tables)):
-                if self.tables[tnum].status == 'Active':
-                    print '%3d' % tnum, self.tables[tnum]
+            for tnum in xrange(1, len(self.tables[self.round])):
+                if self.tables[self.round][tnum].status == 'Active':
+                    print '%3d' % tnum, self.tables[self.round][tnum]
 
 
     def list_pairings(self):
         """Prints out a list of all pairings with tables duplicated so that
         players can find their proper table easier."""
-        atables = self.tables[1:]
+        atables = self.tables[self.round][1:]
         btables = [atables[x].inverse_copy() for x in xrange(len(atables))]
         for count in xrange(len(atables)):
             atables[count].number = count + 1
