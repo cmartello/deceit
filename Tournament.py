@@ -75,44 +75,50 @@ class Tournament:
             return -1
 
 
-    def start_round(self):
-        """Starts a new round if there's no active tables and will complain
-        if there are any tables still active.  Otherwise, it just calls 
-        generate_pairings and increments the round counter."""
+    def active_tables(self):
+        """Returns a list of currently active tables if applicable.  Otherwise
+        returns an empty list."""
 
-        if self.round != 0:
-            if len([x for x in self.tables[self.round] if x.status == 'Active']) > 0:
-                print "Error: Can't start new round, current one has active tables."
-                return -1
+        if self.round < 1:
+            return []
+
+        return [x for x in self.tables[self.round] if x.status == 'Active']
+
+
+    def start_round(self):
+        """Starts a new round if there's no active tables.  If there are open
+        tables, it returns a list of those tables.  Otherwise, it returns
+        True."""
+
+        tables = self.active_tables()
+        if len(tables) > 0:
+            return tables
         self.generate_pairings()
         self.round += 1
+        return True
 
 
     def finish_round(self):
         """If there are no currently active tables, finish_round simply locks
-        all tables."""
+        all tables and returns true.  Otherwise, returns the active table
+        list."""
 
-        active_tables = [x for x in self.tables[self.round] if x.status == 'Active']
-        if len(active_tables) > 0:
-            print "Error: Can't finish round, current one has active tables."
-            for table in active_tables:
-                print table
-            return -1
+        tables = self.active_tables()
+        if len(tables) > 0:
+            return tables
         for table in self.tables[self.round]:
-            x.lock_table()
+            table.lock_table()
+        return True
 
 
     def generate_pairings(self):
         """Generates pairings for the current round, first by shuffling the
         player list and then sorting by points.  The player with the lowest
         point total when there's an uneven number of players will get a bye.
-        """
 
-        # don't regenerate pairings mid-round!
-        if self.round != 0:
-            if len([x for x in self.tables[self.round] if x.status == 'Active']) > 0:
-                print 'Error: self.tables[', self.round, '] still has active tables.'
-                return -1
+        Pairings should not be generated mid-round; this is prevented by
+        Tournament.start_round()
+        """
 
         # Dummy table; only in place to make tables index from 1
         nobody = Player('NOBODY', 'NOBODY')
@@ -171,10 +177,9 @@ class Tournament:
 
 
     def top_players(self, players=8):
-        """Performs a tiebreaker and lists the top n players where n is
+        """Performs a tiebreaker and returns the top n players where n is
         typically 8."""
 
         all_players = self.players[:]
         all_players.sort(tiebreaker_sort)
-        for player in all_players[-8:]:
-            print player
+        return all_players[-players:]
