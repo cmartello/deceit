@@ -63,7 +63,7 @@ class Table:
 
 # test code
 if __name__ == '__main__':
-    from Player import player
+    from Player import Player
     PLAYER1 = Player('John', 'Cleese')
     PLAYER2 = Player('Eric', 'Idle')
     print 'Before:'
