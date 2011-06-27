@@ -28,4 +28,5 @@ if __name__ == '__main__':
 
         event.finish_round()
 
-    event.top_players()
+    for x in event.top_players():
+        print x
