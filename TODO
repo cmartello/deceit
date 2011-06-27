@@ -1,3 +1,5 @@
 * further cleanup of output from both player and tournament modules
 * improve error handling
 * get print statements out of key modules
+* create top-n / single elimination bracket scheduling
+* create round-robin tournament scheduling
