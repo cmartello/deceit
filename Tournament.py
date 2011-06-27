@@ -147,7 +147,8 @@ class Tournament:
 
     def list_tables(self, showall=False):
         """Lists the tables that are still playing in the event.  If all
-        is True, it will instead list all tables."""
+        is True, it will instead list all tables.
+        Deprecated -- Will be moved to console UI."""
 
         if self.round < 1:
             return -1
@@ -163,7 +164,8 @@ class Tournament:
 
     def list_pairings(self):
         """Prints out a list of all pairings with tables duplicated so that
-        players can find their proper table easier."""
+        players can find their proper table easier.
+        Deprecated -- Will be moved to console UI."""
 
         atables = self.tables[self.round][1:]
         btables = [atables[x].inverse_copy() for x in xrange(len(atables))]
