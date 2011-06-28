@@ -4,6 +4,41 @@ that is likely to happen within a typical tournament."""
 from random import shuffle
 from Table import Table
 from Player import Player
+from math import ceil, log
+
+
+def number_rounds(players, dci=False, top=8):
+    """Calculates the number of swiss rounds before breaking to the top tier
+    based on the number of players in the event.  Accepts two optional
+    arguments that influence the number of rounds.
+
+    In general, swiss rounds are determined by the ceiling of log_2(players)
+    except that in a DCI preimere event, a modified chart is used for events
+    with more than 128 players.
+
+    Further, a break to top 4 requires one additonal round of swiss draw and
+    a break to top 2 requires two additional rounds."""
+
+    # solve 2^n = p for n and round n up -- the general number of swiss rounds
+    base = int(ceil(log(players)/log(2)))
+
+    # top n extra rounds.
+    extra = 0
+    if top == 4:
+        extra = 1
+    if top == 2:
+        extra = 2
+
+    # This is for the nasty chart at the end of the floor rules.
+    if dci == True:
+        if players >= 129 and players <= 226:
+            base = 8
+        if players >= 227 and players <= 409:
+            base = 9
+        if players >= 410:
+            base = 10
+
+    return base + extra
 
 
 def point_sort(plx, ply):
@@ -13,33 +48,30 @@ def point_sort(plx, ply):
 
 def tiebreaker_sort(plx, ply):
     """Used for the top-8 break or final tiebreaker sort."""
+
+    xscores, yscores = [], []
+
     # match points
-    xmp, ymp = plx.match_points(), ply.match_points()
-    if xmp > ymp:
-        return 1
-    if xmp < ymp:
-        return -1
+    xscores.append(plx.match_points())
+    yscores.append(ply.match_points())
 
     # opponent's match-win percentage
-    xomw, yomw = plx.opp_match_win_percent(), ply.opp_match_win_percent()
-    if xomw > yomw:
-        return 1
-    elif xomw < yomw:
-        return -1
+    xscores.append(plx.opp_match_win_percent())
+    yscores.append(ply.opp_match_win_percent())
 
     # game-win percentage
-    xgwp, ygwp = plx.game_win_percent(), ply.game_win_percent()
-    if xgwp > ygwp:
-        return 1
-    elif xgwp < ygwp:
-        return -1
+    xscores.append(plx.game_win_percent())
+    yscores.append(ply.game_win_percent())
 
     # opponent's game-win percentage
-    xogwp, yogwp = plx.opp_game_win_percent(), ply.opp_game_win_percent()
-    if xogwp > yogwp:
-        return 1
-    elif xogwp < yogwp:
-        return -1
+    xscores.append(plx.opp_game_win_percent())
+    yscores.append(ply.opp_game_win_percent())
+
+    for score in xrange(4):
+        if xscores[score] > yscores[score]:
+            return 1
+        elif xscores[score] < yscores[score]:
+            return -1
 
     # unbroken tie
     return 0

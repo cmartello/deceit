@@ -45,6 +45,7 @@ def get_players(sanctioned = False):
         if rex is not None:
             firstname, lastname = rex.group(3), rex.group(1)
 
+        # commit this stuff to the event
         if sanctioned == True:
             userpin = int(raw_input('pin  ->'))
             EVENT.add_player(Player(firstname, lastname, userpin))
