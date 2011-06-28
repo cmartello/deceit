@@ -13,33 +13,30 @@ def point_sort(plx, ply):
 
 def tiebreaker_sort(plx, ply):
     """Used for the top-8 break or final tiebreaker sort."""
+
+    xscores, yscores = [], []
+
     # match points
-    xmp, ymp = plx.match_points(), ply.match_points()
-    if xmp > ymp:
-        return 1
-    if xmp < ymp:
-        return -1
+    xscores.append(plx.match_points())
+    yscores.append(ply.match_points())
 
     # opponent's match-win percentage
-    xomw, yomw = plx.opp_match_win_percent(), ply.opp_match_win_percent()
-    if xomw > yomw:
-        return 1
-    elif xomw < yomw:
-        return -1
+    xscores.append(plx.opp_match_win_percent())
+    yscores.append(ply.opp_match_win_percent())
 
     # game-win percentage
-    xgwp, ygwp = plx.game_win_percent(), ply.game_win_percent()
-    if xgwp > ygwp:
-        return 1
-    elif xgwp < ygwp:
-        return -1
+    xscores.append(plx.game_win_percent())
+    yscores.append(ply.game_win_percent())
 
     # opponent's game-win percentage
-    xogwp, yogwp = plx.opp_game_win_percent(), ply.opp_game_win_percent()
-    if xogwp > yogwp:
-        return 1
-    elif xogwp < yogwp:
-        return -1
+    xscores.append(plx.opp_game_win_percent())
+    yscores.append(ply.opp_game_win_percent())
+
+    for score in xrange(4):
+        if xscores[score] > yscores[score]:
+            return 1
+        elif xscores[score] < yscores[score]:
+            return -1
 
     # unbroken tie
     return 0
