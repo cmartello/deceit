@@ -4,6 +4,41 @@ that is likely to happen within a typical tournament."""
 from random import shuffle
 from Table import Table
 from Player import Player
+from math import ceil, log
+
+
+def number_rounds(players, dci=False, top=8):
+    """Calculates the number of swiss rounds before breaking to the top tier
+    based on the number of players in the event.  Accepts two optional
+    arguments that influence the number of rounds.
+
+    In general, swiss rounds are determined by the ceiling of log_2(players)
+    except that in a DCI preimere event, a modified chart is used for events
+    with more than 128 players.
+
+    Further, a break to top 4 requires one additonal round of swiss draw and
+    a break to top 2 requires two additional rounds."""
+
+    # solve 2^n = p for n and round n up -- the general number of swiss rounds
+    base = int(ceil(log(players)/log(2)))
+
+    # top n extra rounds.
+    extra = 0
+    if top == 4:
+        extra = 1
+    if top == 2:
+        extra = 2
+
+    # This is for the nasty chart at the end of the floor rules.
+    if dci == True:
+        if players >= 129 and players <= 226:
+            base = 8
+        if players >= 227 and players <= 409:
+            base = 9
+        if players >= 410:
+            base = 10
+
+    return base + extra
 
 
 def point_sort(plx, ply):
