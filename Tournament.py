@@ -20,7 +20,7 @@ def number_rounds(players, dci=False, top=8):
     a break to top 2 requires two additional rounds."""
 
     # solve 2^n = p for n and round n up -- the general number of swiss rounds
-    base = int(ceil(log(players)/log(2)))
+    base = int(ceil(log(players) / log(2)))
 
     # top n extra rounds.
     extra = 0
@@ -85,7 +85,7 @@ def table_sort(plx, ply):
 class Tournament:
     """Module that encapsulates all relevant tournament functions."""
 
-    def __init__(self, event_name, regnum = 0):
+    def __init__(self, event_name, regnum=0):
         """Starts a tournament.  Requires a name for the event, and you may
         optionally supply a registration number for DCI-sanctioned events.
         Note that the year and day fields will be automatically added, though
@@ -97,7 +97,6 @@ class Tournament:
         self.round = 0
         self.tables = ['Nothing']
 
-
     def add_player(self, u_player):
         """Adds a player object to the tournament's list of players."""
 
@@ -105,7 +104,6 @@ class Tournament:
             self.players.append(u_player)
         else:
             return -1
-
 
     def active_tables(self):
         """Returns a list of currently active tables if applicable.  Otherwise
@@ -115,7 +113,6 @@ class Tournament:
             return []
 
         return [x for x in self.tables[self.round] if x.status == 'Active']
-
 
     def start_round(self):
         """Starts a new round if there's no active tables.  If there are open
@@ -129,7 +126,6 @@ class Tournament:
         self.round += 1
         return True
 
-
     def finish_round(self):
         """If there are no currently active tables, finish_round simply locks
         all tables and returns true.  Otherwise, returns the active table
@@ -141,7 +137,6 @@ class Tournament:
         for table in self.tables[self.round]:
             table.lock_table()
         return True
-
 
     def generate_pairings(self):
         """Generates pairings for the current round, first by shuffling the
@@ -166,7 +161,6 @@ class Tournament:
             pairings.append(Table(plist.pop(), plist.pop()))
         self.tables.append(pairings)
 
-
     def report_match(self, tableno, wins, losses, draws=0):
         """Reports the match for the specified table as wins-losses,draws
         for the left-hand side of the table.  The right-hand player's
@@ -175,7 +169,6 @@ class Tournament:
         if self.round < 1:
             return -1
         self.tables[self.round][tableno].report_match(wins, losses, draws)
-
 
     def list_tables(self, showall=False):
         """Lists the tables that are still playing in the event.  If all
@@ -193,7 +186,6 @@ class Tournament:
                 if self.tables[self.round][tnum].status == 'Active':
                     print '%3d' % tnum, self.tables[self.round][tnum]
 
-
     def list_pairings(self):
         """Prints out a list of all pairings with tables duplicated so that
         players can find their proper table easier.
@@ -208,7 +200,6 @@ class Tournament:
         all_tables.sort(table_sort)
         for table in all_tables:
             print '%3d' % table.number, table
-
 
     def top_players(self, players=8):
         """Performs a tiebreaker and returns the top n players where n is

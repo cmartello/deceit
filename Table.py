@@ -2,6 +2,7 @@
 reporting them.  Contains some test code at the very end.
 """
 
+
 class Table:
     """Simple class representing each match.  Contains a 'left' and 'right'
     player object and a couple helper functions."""
@@ -20,7 +21,6 @@ class Table:
         if self.right.firstname == 'BYE':
             self.report_match(2, 0)
 
-
     def report_match(self, wins, losses, draws=0):
         """Reports the match for the specified table as wins-losses,draws
         for the left-hand side of the table.  The right-hand player's
@@ -31,7 +31,6 @@ class Table:
         self.left.record_match(self.right, wins, losses, draws)
         self.right.record_match(self.left, losses, wins, draws)
         self.status = 'Reported'
-
 
     def __str__(self):
         left = str(self.left.match_points()) + ' ' +\
@@ -45,13 +44,11 @@ class Table:
             self.right.lastname, self.right.firstname)
         return '%-32s %-32s' % (left, right)
 
-
     def lock_table(self):
         """Called when going to a new round.  Merely prevents results from
         being altered further."""
 
         self.status = 'Locked'
-
 
     def inverse_copy(self):
         """When generating a printable pairings list, it is preferable to
