@@ -170,37 +170,6 @@ class Tournament:
             return -1
         self.tables[self.round][tableno].report_match(wins, losses, draws)
 
-    def list_tables(self, showall=False):
-        """Lists the tables that are still playing in the event.  If all
-        is True, it will instead list all tables.
-        Deprecated -- Will be moved to console UI."""
-
-        if self.round < 1:
-            return -1
-
-        if showall == True:
-            for tnum in xrange(1, len(self.tables[self.round])):
-                print '%3d' % tnum, self.tables[self.round][tnum]
-        elif showall == False:
-            for tnum in xrange(1, len(self.tables[self.round])):
-                if self.tables[self.round][tnum].status == 'Active':
-                    print '%3d' % tnum, self.tables[self.round][tnum]
-
-    def list_pairings(self):
-        """Prints out a list of all pairings with tables duplicated so that
-        players can find their proper table easier.
-        Deprecated -- Will be moved to console UI."""
-
-        atables = self.tables[self.round][1:]
-        btables = [atables[x].inverse_copy() for x in xrange(len(atables))]
-        for count in xrange(len(atables)):
-            atables[count].number = count + 1
-            btables[count].number = count + 1
-        all_tables = atables + btables
-        all_tables.sort(table_sort)
-        for table in all_tables:
-            print '%3d' % table.number, table
-
     def top_players(self, players=8):
         """Performs a tiebreaker and returns the top n players where n is
         typically 8."""
