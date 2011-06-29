@@ -5,6 +5,7 @@ a short 32-player tournament and outputting the results.
 from Player import Player
 from Tournament import Tournament
 from random import randint
+from console import list_tables
 
 if __name__ == '__main__':
     EVENT = Tournament('Test Event')
@@ -17,7 +18,7 @@ if __name__ == '__main__':
         EVENT.start_round()
         print 'Round: ', EVENT.round
 
-        EVENT.list_tables(showall=True)
+        list_tables(EVENT, showall=True)
 
         for match in EVENT.tables[EVENT.round]:
             y = randint(1, 100)
