@@ -112,7 +112,7 @@ class Tournament:
         if self.round < 1:
             return []
 
-        return [x for x in self.tables[self.round] if x.status == 'Active']
+        return [x for x in self.tables[self.round][1:] if x.status == 'Active']
 
     def start_round(self):
         """Starts a new round if there's no active tables.  If there are open
@@ -150,7 +150,6 @@ class Tournament:
         # Dummy table; only in place to make tables index from 1
         nobody = Player('NOBODY', 'NOBODY')
         pairings = [Table(nobody, nobody)]
-        pairings[0].report_match(0,0)
 
         if len(self.players[1:]) % 2 == 0:
             plist = self.players[1:]
