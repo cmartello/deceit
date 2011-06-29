@@ -150,6 +150,7 @@ class Tournament:
         # Dummy table; only in place to make tables index from 1
         nobody = Player('NOBODY', 'NOBODY')
         pairings = [Table(nobody, nobody)]
+        pairings[0].report_match(0,0)
 
         if len(self.players[1:]) % 2 == 0:
             plist = self.players[1:]
