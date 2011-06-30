@@ -75,6 +75,10 @@ class Player:
 
         games = self.games_won + self.games_lost + self.games_drawn
 
+        # avoid a div/0 bug
+        if games == 0:
+            return 1.0 / 3
+
         gwp = self.game_points() / (games * 3.0)
 
         # per the floor rules, a player's GWP is never below 0.333
@@ -88,6 +92,10 @@ class Player:
 
         matches = len(self.opponents)
 
+        # avoid a div/0 bug
+        if matches == 0:
+            return 1.0 / 3
+
         mwp = self.match_points() / (matches * 3.0)
 
         # again per the floor rules, a player's MWP is never below 0.333
@@ -100,12 +108,20 @@ class Player:
         """Returns the average of this player's opponent's match-win
         percentages."""
 
+        # avoid a div/0 bug
+        if len(self.opponents) == 0:
+            return 1.0 / 3
+
         return sum([x[0].match_win_percent() for x in self.opponents])\
             / len(self.opponents)
 
     def opp_game_win_percent(self):
         """Returns the average of this player's opponent's game-win
         percentages."""
+
+        # avoid a div/0 bug
+        if len(self.opponents) == 0:
+            return 1.0 / 3
 
         return sum([x[0].game_win_percent() for x in self.opponents])\
             / len(self.opponents)
