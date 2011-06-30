@@ -85,8 +85,10 @@ def get_players(sanctioned=False):
 
     username = 'nothing'
     userpin = 0
+    pnum = 0
     while username != '':
-        username = raw_input('name -> ')
+        pnum += 1
+        username = raw_input('name (#%d)-> ' % pnum)
 
         if username == '':
             break
