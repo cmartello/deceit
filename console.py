@@ -1,3 +1,5 @@
+"""The console-based user interface for DeCeIt."""
+
 from Tournament import Tournament, table_sort, number_rounds
 from Player import Player
 from re import search
@@ -19,6 +21,7 @@ def list_tables(tournament, showall=False):
             if tournament.tables[tournament.round][tnum].status == 'Active':
                 print '%3d' % tnum, tournament.tables[tournament.round][tnum]
 
+
 def list_pairings(tournament):
     """Prints out a list of all pairings with tables duplicated so that
     players can find their proper table easier.
@@ -33,6 +36,7 @@ def list_pairings(tournament):
     all_tables.sort(table_sort)
     for table in all_tables:
         print '%3d' % table.number, table
+
 
 def get_event_info():
     """Gather basic event information.  Note that this isn't user-proofed
@@ -50,15 +54,14 @@ def get_event_info():
     return (name, regnum)
 
 
-def get_players(sanctioned = False):
+def get_players(sanctioned=False):
     """Query the user for a list of players by name and PIN.  Only ask for
     their PIN if the match is offically sanctioned.
     Again, there is no user-proofing here.
     TODO - make this work with a Tournament object passed to it.
     TODO - user-proof the input."""
 
-    print 'Enter player names below (blank line to stop)'
-    global EVENT
+    print 'Enter player names below (blank line to stop)'   
 
     username = 'nothing'
     userpin = 0
@@ -87,8 +90,8 @@ def get_players(sanctioned = False):
 
 
 if __name__ == '__main__':
-    info = get_event_info()
-    EVENT = Tournament(info[0], info[1])
+    INFO = get_event_info()
+    EVENT = Tournament(INFO[0], INFO[1])
     get_players()
 
     ROUNDS = number_rounds(len(EVENT.players))
@@ -99,20 +102,22 @@ if __name__ == '__main__':
 
         ACTIVE = len(EVENT.active_tables())
         while ACTIVE > 0:
-            cmd = raw_input('Round #%d (%d tables open) -> ' % (EVENT.round, ACTIVE))
-            if search('lt', cmd) is not None:
+            CMD = raw_input('Round #%d (%d tables open) -> ' % \
+                (EVENT.round, ACTIVE))
+            if search('lt', CMD) is not None:
                 list_tables(EVENT)
                 continue
-            if search('lat', cmd) is not None:
+            if search('lat', CMD) is not None:
                 list_tables(EVENT, True)
                 continue
-            if search('^r ', cmd) is not None:
-                broken = cmd.split(' ')
-                if len(broken) == 2:
+            if search('^r ', CMD) is not None:
+                BROKEN = CMD.split(' ')
+                if len(BROKEN) == 2:
                     # ask for results
                     pass
-                if len(broken) == 4:
+                if len(BROKEN) == 4:
                     # report as table broken[1] (broken[2]-broken[3])
-                    EVENT.report_match(int(broken[1]), int(broken[2]), int(broken[3]))
+                    EVENT.report_match(int(BROKEN[1]), int(BROKEN[2]), \
+                        int(BROKEN[3]))
                     ACTIVE = len(EVENT.active_tables())
         EVENT.finish_round()
