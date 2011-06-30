@@ -1,8 +1,28 @@
 """The console-based user interface for DeCeIt."""
 
-from Tournament import Tournament, table_sort, number_rounds
+from Tournament import Tournament, table_sort, number_rounds, tiebreaker_sort
 from Player import Player
 from re import search
+
+
+def list_standings(tournament, byscore=False):
+    """Prints a list of the current standings (match points, tiebreakers,
+    etc.) for the given tournament.  Normally lists simply by player number;
+    if byscore is True, then it orders the players by their full tiebroken
+    score."""
+    players = tournament.players[1:]
+
+    if byscore == True:
+        players.sort(tiebreaker_sort)
+        players.reverse()
+
+    number = 1
+    for player in players:
+        name = '%s, %s' % (player.lastname, player.firstname)
+        print '%4d %-34s %2d %0.3f %0.3f %0.3f' % (number, name, \
+            player.match_points(), player.opp_match_win_percent(), \
+            player.game_win_percent(), player.opp_game_win_percent() )
+        number += 1
 
 
 def list_tables(tournament, showall=False):
@@ -104,6 +124,12 @@ if __name__ == '__main__':
         while ACTIVE > 0:
             CMD = raw_input('Round #%d (%d tables open) -> ' % \
                 (EVENT.round, ACTIVE))
+            if search('ls', CMD) is not None:
+                list_standings(EVENT)
+                continue
+            if search('lso', CMD) is not None:
+                list_standings(EVENT, byscore=True)
+                continue
             if search('lt', CMD) is not None:
                 list_tables(EVENT)
                 continue

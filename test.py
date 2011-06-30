@@ -5,7 +5,7 @@ a short 32-player tournament and outputting the results.
 from Player import Player
 from Tournament import Tournament
 from random import randint
-from console import list_tables
+from console import list_tables, list_standings
 
 if __name__ == '__main__':
     EVENT = Tournament('Test Event')
@@ -35,3 +35,5 @@ if __name__ == '__main__':
 
     for x in EVENT.top_players():
         print x
+
+    list_standings(EVENT, byscore=True)
