@@ -124,6 +124,9 @@ if __name__ == '__main__':
         while ACTIVE > 0:
             CMD = raw_input('Round #%d (%d tables open) -> ' % \
                 (EVENT.round, ACTIVE))
+            if search('lp', CMD) is not None:
+                list_pairings(EVENT)
+                continue
             if search('ls', CMD) is not None:
                 list_standings(EVENT)
                 continue
