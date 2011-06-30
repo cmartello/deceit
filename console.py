@@ -21,7 +21,7 @@ def list_standings(tournament, byscore=False):
         name = '%s, %s' % (player.lastname, player.firstname)
         print '%4d %-34s %2d %0.3f %0.3f %0.3f' % (number, name, \
             player.match_points(), player.opp_match_win_percent(), \
-            player.game_win_percent(), player.opp_game_win_percent() )
+            player.game_win_percent(), player.opp_game_win_percent())
         number += 1
 
 
@@ -81,7 +81,7 @@ def get_players(sanctioned=False):
     TODO - make this work with a Tournament object passed to it.
     TODO - user-proof the input."""
 
-    print 'Enter player names below (blank line to stop)'   
+    print 'Enter player names below (blank line to stop)'
 
     username = 'nothing'
     userpin = 0
