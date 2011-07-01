@@ -1,9 +1,7 @@
 * further cleanup of output from both player and tournament modules
 * improve error handling
-* get print statements out of key modules
 * create top-n / single elimination bracket scheduling
 * create round-robin tournament scheduling
 * create functions for standings listing
 * improve the console parsing
-* player bulletproofing
-? Does table_sort belong in Tournament.py?  Leaning toward yes.
+* user bulletproofing
