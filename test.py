@@ -37,3 +37,19 @@ if __name__ == '__main__':
         print x
 
     list_standings(EVENT, byscore=True)
+
+    # now a test of the round-robin code.  Just for laughs, well use the
+    # top eight players from the 'main event'.
+    top8 = EVENT.top_players()
+
+    # create new event
+    RROBIN = Tournament('Round Robin Test', round_robin=True)
+    for x in top8:
+        RROBIN.add_player(x)
+
+    RROBIN.start_round()
+
+    for x in RROBIN.tables[1:]:
+        for y in x[1:]:
+            print y
+        print
