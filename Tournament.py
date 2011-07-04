@@ -42,7 +42,7 @@ def number_rounds(players, dci=False, top=8):
 
 
 def point_sort(plx, ply):
-    """Used by generate_pairings to sort players by points."""
+    """Used by generate_swiss_pairings to sort players by points."""
     return plx.match_points() - ply.match_points()
 
 
@@ -85,20 +85,26 @@ def table_sort(plx, ply):
 class Tournament:
     """Module that encapsulates all relevant tournament functions."""
 
-    def __init__(self, event_name, regnum=0, round_robin=False):
+    def __init__(self, event_name, regnum=0, pairing='swiss'):
         """Starts a tournament.  Requires a name for the event, and you may
         optionally supply a registration number for DCI-sanctioned events.
         Note that the year and day fields will be automatically added, though
         this code is still in the future.
-        If round_robin is True, the enrolled players will engauge in a
-        round-robin style event."""
+        pairing determines the method by which the players will be paired
+        against one another.  By default, swiss pairing is used per 
+        typical DCI events.  Optionally, round-robin and single-elimination
+        modes can be used, usually after a cut to the top-n players.
+        'swiss' default
+        'robin' round-robin scheduling
+        'single' single elimination
+        """
 
         self.event_name = event_name
         self.regnum = regnum
         self.players = [Player('BYE', 'BYE')]
         self.round = 0
         self.tables = ['Nothing']
-        self.round_robin = round_robin
+        self.pairing = pairing
 
     def add_player(self, u_player):
         """Adds a player object to the tournament's list of players."""
@@ -126,13 +132,13 @@ class Tournament:
         if len(tables) > 0:
             return tables
 
-        if self.round == 0 and self.round_robin == True:
+        if self.round == 0 and self.pairing == 'round':
             # create complete tournament schedule
             self.round_schedule()
             return True
 
-        if self.round_robin == False:
-            self.generate_pairings()
+        if self.pairing == 'swiss':
+            self.generate_swiss_pairings()
 
         self.round += 1
         return True
@@ -173,7 +179,7 @@ class Tournament:
             table.lock_table()
         return True
 
-    def generate_pairings(self):
+    def generate_swiss_pairings(self):
         """Generates pairings for the current round, first by shuffling the
         player list and then sorting by points.  The player with the lowest
         point total when there's an uneven number of players will get a bye.

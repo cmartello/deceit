@@ -43,7 +43,7 @@ if __name__ == '__main__':
     top8 = EVENT.top_players()
 
     # create new event
-    RROBIN = Tournament('Round Robin Test', round_robin=True)
+    RROBIN = Tournament('Round Robin Test', pairing='round')
     for x in top8:
         RROBIN.add_player(x)
 

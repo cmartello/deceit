@@ -140,4 +140,4 @@ class Player:
         if status not in ['drop', 'cut', 'disq']:
             return -1
         else:
-        self.status = status
+            self.status = status
