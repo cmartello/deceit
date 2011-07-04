@@ -137,15 +137,24 @@ class Tournament:
         self.round += 1
         return True
 
-
     def round_schedule(self):
         """Generates a schedule for a round-robin style tournament."""
 
+        # dummy player for table 0
         nobody = Player('NOBODY', 'NOBODY')
+
+        # if we need a bye player, make sure we've got one
         if len(self.players) % 2 == 0:
             players = self.players[:]
         elif len(self.players) % 2 == 1:
             players = self.players[1:]
+
+        """Rough description of round-robin scheduling method:
+        A list of players is generated and folded at the midway point,
+        indicating the pairings for the round.  Then for each of p-1 rounds,
+        the list is moved one position like a chain of beads -- except for
+        the player in position zero and pairings are determined again.
+        """
         for b in xrange(len(self.players)-2):
             players = [players[0]] + players[2:] + [players[1]]
             self.tables.append([Table(nobody, nobody)] + \
