@@ -152,9 +152,9 @@ class Tournament:
         pairings = [Table(nobody, nobody)]
 
         if len(self.players[1:]) % 2 == 0:
-            plist = self.players[1:]
+            plist = [x for x in self.players[1:] if x.status == 'active']
         else:
-            plist = self.players[:]
+            plist = [x for x in self.players[:] if x.status == 'active']
         shuffle(plist)
         plist.sort(point_sort)
         while len(plist) > 1:
