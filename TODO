@@ -2,7 +2,6 @@
 * improve error handling
 * create top-n / single elimination bracket scheduling
     - DCI top8 : 1-8 4-5 3-6 2-7
-* create round-robin tournament scheduling
 * create functions for standings listing
 * improve the console parsing
 * user bulletproofing
