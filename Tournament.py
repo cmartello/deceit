@@ -85,17 +85,20 @@ def table_sort(plx, ply):
 class Tournament:
     """Module that encapsulates all relevant tournament functions."""
 
-    def __init__(self, event_name, regnum=0):
+    def __init__(self, event_name, regnum=0, round_robin=False):
         """Starts a tournament.  Requires a name for the event, and you may
         optionally supply a registration number for DCI-sanctioned events.
         Note that the year and day fields will be automatically added, though
-        this code is still in the future."""
+        this code is still in the future.
+        If round_robin is True, the enrolled players will engauge in a
+        round-robin style event."""
 
         self.event_name = event_name
         self.regnum = regnum
         self.players = [Player('BYE', 'BYE')]
         self.round = 0
         self.tables = ['Nothing']
+        self.round_robin = round_robin
 
     def add_player(self, u_player):
         """Adds a player object to the tournament's list of players."""
@@ -122,9 +125,41 @@ class Tournament:
         tables = self.active_tables()
         if len(tables) > 0:
             return tables
-        self.generate_pairings()
+
+        if self.round == 0 and self.round_robin == True:
+            # create complete tournament schedule
+            self.round_schedule()
+            return True
+
+        if self.round_robin == False:
+            self.generate_pairings()
+
         self.round += 1
         return True
+
+    def round_schedule(self):
+        """Generates a schedule for a round-robin style tournament."""
+
+        # dummy player for table 0
+        nobody = Player('NOBODY', 'NOBODY')
+
+        # if we need a bye player, make sure we've got one
+        if len(self.players) % 2 == 0:
+            players = self.players[:]
+        elif len(self.players) % 2 == 1:
+            players = self.players[1:]
+
+        """Rough description of round-robin scheduling method:
+        A list of players is generated and folded at the midway point,
+        indicating the pairings for the round.  Then for each of p-1 rounds,
+        the list is moved one position like a chain of beads -- except for
+        the player in position zero and pairings are determined again.
+        """
+        for b in xrange(len(self.players)-2):
+            players = [players[0]] + players[2:] + [players[1]]
+            self.tables.append([Table(nobody, nobody)] + \
+                [Table(players[x], players[(len(players)-1)-x]) for x in \
+                xrange(0,len(players)/2)])
 
     def finish_round(self):
         """If there are no currently active tables, finish_round simply locks
