@@ -40,11 +40,11 @@ if __name__ == '__main__':
 
     # now a test of the round-robin code.  Just for laughs, well use the
     # top eight players from the 'main event'.
-    top8 = EVENT.top_players()
+    TOP8 = EVENT.top_players()
 
     # create new event
     RROBIN = Tournament('Round Robin Test', round_robin=True)
-    for x in top8:
+    for x in TOP8:
         RROBIN.add_player(x)
 
     RROBIN.start_round()
