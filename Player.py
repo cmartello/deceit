@@ -126,7 +126,7 @@ class Player:
         return sum([x[0].game_win_percent() for x in self.opponents])\
             / len(self.opponents)
 
-    def set_status(self, status = 'drop'):
+    def set_status(self, status='drop'):
         """Changes the player's status from 'active' to something else.
         All non-active statuses are considered to have left the tournament
         and will therefore not be paired.

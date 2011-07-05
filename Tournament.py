@@ -155,17 +155,17 @@ class Tournament:
         elif len(self.players) % 2 == 1:
             players = self.players[1:]
 
-        """Rough description of round-robin scheduling method:
-        A list of players is generated and folded at the midway point,
-        indicating the pairings for the round.  Then for each of p-1 rounds,
-        the list is moved one position like a chain of beads -- except for
-        the player in position zero and pairings are determined again.
-        """
-        for b in xrange(len(self.players)-2):
+        # Rough description of round-robin scheduling method:
+        # A list of players is generated and folded at the midway point,
+        # indicating the pairings for the round.  Then for each of p-1 rounds,
+        # the list is moved one position like a chain of beads -- except for
+        # the player in position zero and pairings are determined again.
+
+        for ignore in xrange(len(self.players)-2):
             players = [players[0]] + players[2:] + [players[1]]
             self.tables.append([Table(nobody, nobody)] + \
-                [Table(players[x], players[(len(players)-1)-x]) for x in \
-                xrange(0,len(players)/2)])
+                [Table(players[x], players[(len(players) - 1) - x]) for x in \
+                xrange(0, len(players) / 2)])
 
     def finish_round(self):
         """If there are no currently active tables, finish_round simply locks
