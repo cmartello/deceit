@@ -141,3 +141,7 @@ class Player:
             return -1
         else:
             self.status = status
+
+    def won_most_recent(self):
+        if self.opponents[-1][1] > self.opponents[-1][1]:
+            return True

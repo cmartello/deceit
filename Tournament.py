@@ -140,6 +140,9 @@ class Tournament:
         if self.pairing == 'swiss':
             self.generate_swiss_pairings()
 
+        if self.pairing == 'single':
+            self.generate_single_elimination()
+
         self.round += 1
         return True
 
@@ -178,6 +181,66 @@ class Tournament:
         for table in self.tables[self.round]:
             table.lock_table()
         return True
+
+    def generate_single_elimination(self, seed=False):
+        """Code for a single elimination (usually finals) bracket.  There's
+        a few special cases here.
+
+        When there are two, four, or eight players still active, they players
+        are seated at tables in a manner typical of DCI events.  The top
+        rated player plays the lowest, second place player second lowest and
+        so on.
+
+        Otherwise, all players who lost their match are cut and winners from
+        adjacent tables are pitted against each other.
+
+        Byes are NOT implemented for single elimination yet.  As such, you
+        should use this single-elimination method only when the number of
+        players remaining is a power of two.
+
+        If seed is True, then it's assumed that this is the first round
+        of a top-n final and players will be seated accordingly.
+        """
+
+        nobody = Player('nobody', 'nobody')
+
+        pairings = [Table(nobody, nobody)]
+
+        num_players = len([x for x in self.players if x.status == 'active'])
+
+        # easy case: if we're not seeding, cut all losing players and seat
+        # the rest of them
+        if seed == False:
+            players = []
+            # find the winner at each table and cut the loser
+            for x in self.tables[self.round][1:]:
+                if x.left.won_most_recent() == True:
+                    players.append(x)
+                    x.right.set_status('cut')
+
+                elif x.right.won_most_recent() == True:
+                    players.append(x)
+                    x.left.set_status('cut')
+
+            # create the pairings list
+            for a in xrange(0,len(players),2):
+                pairings.append(Table(players[a], players[a+1])
+
+            # and tack those pairings onto the global tables list
+            self.tables.append(pairings)
+
+        # less trivial: create ordered pairings per DCI floor rules
+        elif seed == True:
+            players = sorted([x for x in self.players[1:] if x.status == 'active'], tiebreaker_sort()])
+            if num_players == 8:
+                pairings.append(players[0], players[7])
+                pairings.append(players[3], players[4])
+                pairings.append(players[2], players[5])
+                pairings.append(players[1], players[6])
+            elif num_players == 4:
+                pairings.append(players[0], players[3])
+                pairings.append(players[1], players[2])
+            self.tables.append(pairings)
 
     def generate_swiss_pairings(self):
         """Generates pairings for the current round, first by shuffling the
