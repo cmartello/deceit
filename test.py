@@ -53,3 +53,24 @@ if __name__ == '__main__':
         for y in x[1:]:
             print y
         print
+
+    # create a single-elimination event with those top eight players
+    SINGLE = Tournament('Single elimination test', pairing='single')
+    for x in TOP8:
+        SINGLE.add_player(x)
+
+    for x in xrange(3):
+        SINGLE.start_round()
+
+        print 'round:', SINGLE.round
+
+        list_tables(SINGLE, showall=True)
+
+        for match in SINGLE.tables[SINGLE.round][1:]:
+            y = randint(1, 2)
+            if y == 1:
+                match.report_match(2, 0)
+            elif y == 2:
+                match.report_match(0, 2)
+
+        SINGLE.finish_round()

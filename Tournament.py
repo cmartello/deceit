@@ -91,7 +91,7 @@ class Tournament:
         Note that the year and day fields will be automatically added, though
         this code is still in the future.
         pairing determines the method by which the players will be paired
-        against one another.  By default, swiss pairing is used per 
+        against one another.  By default, swiss pairing is used per
         typical DCI events.  Optionally, round-robin and single-elimination
         modes can be used, usually after a cut to the top-n players.
         'swiss' default
@@ -206,41 +206,47 @@ class Tournament:
 
         pairings = [Table(nobody, nobody)]
 
-        num_players = len([x for x in self.players if x.status == 'active'])
+        num_players = len([x for x in self.players[1:] if x.status == 'active'])
+
+        seed = seed or self.round == 0
 
         # easy case: if we're not seeding, cut all losing players and seat
         # the rest of them
         if seed == False:
             players = []
             # find the winner at each table and cut the loser
-            for x in self.tables[self.round][1:]:
-                if x.left.won_most_recent() == True:
-                    players.append(x)
-                    x.right.set_status('cut')
+            for table in self.tables[self.round][1:]:
+                if table.left.won_most_recent() == True:
+                    players.append(table.left)
+                    table.right.set_status('cut')
 
-                elif x.right.won_most_recent() == True:
-                    players.append(x)
-                    x.left.set_status('cut')
+                elif table.right.won_most_recent() == True:
+                    players.append(table.right)
+                    table.left.set_status('cut')
 
             # create the pairings list
-            for a in xrange(0,len(players),2):
-                pairings.append(Table(players[a], players[a+1])
+            for count in xrange(0, len(players), 2):
+                pairings.append(Table(players[count], players[count + 1]))
 
             # and tack those pairings onto the global tables list
             self.tables.append(pairings)
+            return
 
         # less trivial: create ordered pairings per DCI floor rules
         elif seed == True:
-            players = sorted([x for x in self.players[1:] if x.status == 'active'], tiebreaker_sort()])
+            players = sorted([x for x in self.players[1:] if \
+                x.status == 'active'], tiebreaker_sort)
+
             if num_players == 8:
-                pairings.append(players[0], players[7])
-                pairings.append(players[3], players[4])
-                pairings.append(players[2], players[5])
-                pairings.append(players[1], players[6])
+                pairings.append(Table(players[0], players[7]))
+                pairings.append(Table(players[3], players[4]))
+                pairings.append(Table(players[2], players[5]))
+                pairings.append(Table(players[1], players[6]))
             elif num_players == 4:
-                pairings.append(players[0], players[3])
-                pairings.append(players[1], players[2])
+                pairings.append(Table(players[0], players[3]))
+                pairings.append(Table(players[1], players[2]))
             self.tables.append(pairings)
+            return
 
     def generate_swiss_pairings(self):
         """Generates pairings for the current round, first by shuffling the

@@ -143,5 +143,10 @@ class Player:
             self.status = status
 
     def won_most_recent(self):
-        if self.opponents[-1][1] > self.opponents[-1][1]:
+        """Returns True if the player won their most recent match.  Useful
+        for single-elimination events."""
+
+        if self.opponents[-1][1] > self.opponents[-1][2]:
             return True
+        else:
+            return False
