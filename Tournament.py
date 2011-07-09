@@ -164,7 +164,7 @@ class Tournament:
         # the list is moved one position like a chain of beads -- except for
         # the player in position zero and pairings are determined again.
 
-        for ignore in xrange(len(self.players)-2):
+        for _ in xrange(len(self.players)-2):
             players = [players[0]] + players[2:] + [players[1]]
             self.tables.append([Table(nobody, nobody)] + \
                 [Table(players[x], players[(len(players) - 1) - x]) for x in \
