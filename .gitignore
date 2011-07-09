@@ -4,3 +4,4 @@ attic.rar
 *.pyc
 *~
 *.pdf
+.coverage
