@@ -146,6 +146,10 @@ class Player:
         """Returns True if the player won their most recent match.  Useful
         for single-elimination events."""
 
+        # Avoid an index out of range error
+        if len(self.opponents) < 1:
+            return False
+
         if self.opponents[-1][1] > self.opponents[-1][2]:
             return True
         else:

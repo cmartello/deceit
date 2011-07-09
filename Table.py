@@ -56,18 +56,3 @@ class Table:
         allowing players to find their table by last name quickly."""
 
         return Table(self.right, self.left)
-
-
-# test code
-if __name__ == '__main__':
-    from Player import Player
-    PLAYER1 = Player('John', 'Cleese')
-    PLAYER2 = Player('Eric', 'Idle')
-    print 'Before:'
-    TESTTABLE = Table(PLAYER1, PLAYER2)
-    print TESTTABLE
-    print 'After:'
-    TESTTABLE.report_match(2, 1, 0)
-    print TESTTABLE
-    print 'Inverse:'
-    print TESTTABLE.inverse_copy()
