@@ -1,80 +1,93 @@
+"""A crude attempt at unit-testing DeCeIt."""
+
 from Player import Player
 from Table import Table
+import Tournament
 
 # Player tests
 
-a = Player('John', 'Sheridan')
-b = Player('Jeffrey', 'Sinclair')
+PLA = Player('John', 'Sheridan')
+PLB = Player('Jeffrey', 'Sinclair')
 
-print a
-a.long_report()
+print PLA
+PLA.long_report()
 
-print 'a.game_points() : ', a.game_points()
-print 'a.match_points() : ', a.match_points()
-print 'a.game_win_percent() : ', a.game_win_percent()
-print 'a.match_win_percent() : ', a.match_win_percent()
-print 'a.opp_match_win_percent() : ', a.opp_match_win_percent()
-print 'a.opp_game_win_percent() : ', a.opp_game_win_percent()
-print 'a.won_most_recent() : ', a.won_most_recent()
-print 'a.set_status() (BAD) : ', a.set_status('badvalue')
-a.set_status('drop')
-print 'a.set_status result : ', a.status
+print 'PLA.game_points() : ', PLA.game_points()
+print 'PLA.match_points() : ', PLA.match_points()
+print 'PLA.game_win_percent() : ', PLA.game_win_percent()
+print 'PLA.match_win_percent() : ', PLA.match_win_percent()
+print 'PLA.opp_match_win_percent() : ', PLA.opp_match_win_percent()
+print 'PLA.opp_game_win_percent() : ', PLA.opp_game_win_percent()
+print 'PLA.won_most_recent() : ', PLA.won_most_recent()
+print 'PLA.set_status() (BAD) : ', PLA.set_status('badvalue')
+PLA.set_status('drop')
+print 'PLA.set_status result : ', PLA.status
 
 # respawn player A
-a = Player('John', 'Sheridan')
+PLA = Player('John', 'Sheridan')
 
 # Match report
-a.record_match(b, 2, 1)
-b.record_match(a, 1, 2)
+PLA.record_match(PLB, 2, 1)
+PLB.record_match(PLA, 1, 2)
 
-print 'After match report (2-1 in favor of a):'
+print 'After match report (2-1 in favor of PLA):'
 
-print a
-a.long_report()
+print PLA
+PLA.long_report()
 
-print 'a.game_points() : ', a.game_points()
-print 'a.match_points() : ', a.match_points()
-print 'a.game_win_percent() : ', a.game_win_percent()
-print 'a.match_win_percent() : ', a.match_win_percent()
-print 'a.opp_match_win_percent() : ', a.opp_match_win_percent()
-print 'a.opp_game_win_percent() : ', a.opp_game_win_percent()
-print 'a.won_most_recent() : ', a.won_most_recent()
+print 'PLA.game_points() : ', PLA.game_points()
+print 'PLA.match_points() : ', PLA.match_points()
+print 'PLA.game_win_percent() : ', PLA.game_win_percent()
+print 'PLA.match_win_percent() : ', PLA.match_win_percent()
+print 'PLA.opp_match_win_percent() : ', PLA.opp_match_win_percent()
+print 'PLA.opp_game_win_percent() : ', PLA.opp_game_win_percent()
+print 'PLA.won_most_recent() : ', PLA.won_most_recent()
 
-a.record_match(b,0,0,1)
-b.record_match(a,0,0,1)
+PLA.record_match(PLB, 0, 0, 1)
+PLB.record_match(PLA, 0, 0, 1)
 
 print 'After match report (draw) :'
 
-print a
-a.long_report()
+print PLA
+PLA.long_report()
 
-print 'a.game_points() : ', a.game_points()
-print 'a.match_points() : ', a.match_points()
-print 'a.game_win_percent() : ', a.game_win_percent()
-print 'a.match_win_percent() : ', a.match_win_percent()
-print 'a.opp_match_win_percent() : ', a.opp_match_win_percent()
-print 'a.opp_game_win_percent() : ', a.opp_game_win_percent()
-print 'a.won_most_recent() : ', a.won_most_recent()
+print 'PLA.game_points() : ', PLA.game_points()
+print 'PLA.match_points() : ', PLA.match_points()
+print 'PLA.game_win_percent() : ', PLA.game_win_percent()
+print 'PLA.match_win_percent() : ', PLA.match_win_percent()
+print 'PLA.opp_match_win_percent() : ', PLA.opp_match_win_percent()
+print 'PLA.opp_game_win_percent() : ', PLA.opp_game_win_percent()
+print 'PLA.won_most_recent() : ', PLA.won_most_recent()
 
 
 # make b lose another round
-b.record_match(a,0,2)
-a.record_match(b,2,0)
-print 'b.game_win_percent() : ', b.game_win_percent()
+PLB.record_match(PLA, 0, 2)
+PLA.record_match(PLB, 2, 0)
+print 'PLB.game_win_percent() : ', PLB.game_win_percent()
 
 # Table tests
 
-a = Player('John', 'Sheridan')
-b = Player('Jeffrey', 'Sinclair')
-c = Player('BYE', 'BYE')
-t = Table(a,b)
-tb1 = Table(c,a)
-tb2 = Table(b,c)
+PLA = Player('John', 'Sheridan')
+PLB = Player('Jeffrey', 'Sinclair')
+PLC = Player('BYE', 'BYE')
+TA0 = Table(PLA, PLB)
+TA1 = Table(PLC, PLA)
+TA2 = Table(PLB, PLC)
 
-print t
-t.report_match(2,1)
-t.lock_table()
-print t.report_match(1,2)
-print t.inverse_copy()
-print tb1
-print tb2
+print TA0
+TA0.report_match(2, 1)
+TA0.lock_table()
+print TA0.report_match(1, 2)
+print TA0.inverse_copy()
+print TA1
+print TA2
+
+# Tournament module tests
+
+# Tournament.number_rounds() tests
+print 'Tournament.number_rounds(192, True, 4):', \
+    Tournament.number_rounds(192, True, 4)
+print 'Tournament.number_rounds(384, True, 2):', \
+    Tournament.number_rounds(384, True, 2)
+print 'Tournament.number_rounds(512, True):', \
+    Tournament.number_rounds(512, True)
