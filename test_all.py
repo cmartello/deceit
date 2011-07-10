@@ -91,3 +91,85 @@ print 'Tournament.number_rounds(384, True, 2):', \
     Tournament.number_rounds(384, True, 2)
 print 'Tournament.number_rounds(512, True):', \
     Tournament.number_rounds(512, True)
+
+# Tournament simulation
+PF_NAMES = ['Jeffrey', 'John', 'Micheal', 'Steven', 'Warren', 'Zack', \
+    'Susan', 'Marcus']
+PL_NAMES = ['Sinclair', 'Sheridan', 'Garibaldi', 'Franklin', 'Keffer', \
+    'Allen', 'Ivanova', 'Cole']
+
+EVENT = Tournament.Tournament('Test event')
+
+for x in xrange(8):
+    EVENT.add_player(Player(PF_NAMES[x], PL_NAMES[x]))
+
+print 'Attempting to report a match too early: ', \
+    EVENT.report_match(1, 2, 1)
+
+for y in xrange(3):
+    EVENT.start_round()
+
+    if y == 0:
+        print 'Attempting to add a late player: ', \
+            EVENT.add_player(Player('Late', 'Jerk'))
+        print 'Attempting to start a started round: ', \
+            type(EVENT.start_round())
+        print "Attempting to finish a round that isn't over: ", \
+            type(EVENT.finish_round())
+
+    # show all the tables
+    for x in sorted(EVENT.tables[EVENT.round][1:], Tournament.table_sort):
+        print x
+    print
+
+    EVENT.report_match(1,2,0)
+    EVENT.report_match(2,1,1)
+    EVENT.report_match(3,2,1)
+
+    # drop player 8 after the first round
+    if y == 0:
+        EVENT.report_match(4,0,2)
+        EVENT.players[7].set_status('drop')
+
+    EVENT.finish_round()
+
+# show players in order
+for x in EVENT.top_players():
+    print x
+
+# create a round-robin schedule
+EVENT2 = Tournament.Tournament('Test for Round Robin', pairing='round')
+
+for x in xrange(8):
+    EVENT2.add_player(Player(PF_NAMES[x], PL_NAMES[x]))
+
+EVENT2.start_round()
+
+# do a couple rounds of single elimination
+EVENT3 = Tournament.Tournament('Single-elimination test', pairing='single')
+
+for x in xrange(8):
+    EVENT3.add_player(Player(PF_NAMES[x], PL_NAMES[x]))
+
+EVENT3.start_round()
+EVENT3.report_match(1,2,0)
+EVENT3.report_match(2,0,2)
+EVENT3.report_match(3,2,1)
+EVENT3.report_match(4,1,2)
+EVENT3.finish_round()
+EVENT3.start_round()
+
+# do a round of single-elimination with four players, seeded
+EVENT4 = Tournament.Tournament('Single-elimination test 2', pairing='single')
+
+for x in [x for x in EVENT3.players[1:] if x.status == 'active']:
+    EVENT4.add_player(x)
+
+EVENT4.start_round()
+
+EVENT5 = Tournament.Tournament('Round-robin with byes', pairing='round')
+
+for x in xrange(7):
+    EVENT5.add_player(Player(PF_NAMES[x], PL_NAMES[x]))
+
+EVENT5.start_round()

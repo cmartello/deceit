@@ -135,7 +135,6 @@ class Tournament:
         if self.round == 0 and self.pairing == 'round':
             # create complete tournament schedule
             self.round_schedule()
-            return True
 
         if self.pairing == 'swiss':
             self.generate_swiss_pairings()
@@ -148,7 +147,6 @@ class Tournament:
 
     def round_schedule(self):
         """Generates a schedule for a round-robin style tournament."""
-
         # dummy player for table 0
         nobody = Player('NOBODY', 'NOBODY')
 
@@ -261,7 +259,7 @@ class Tournament:
         nobody = Player('NOBODY', 'NOBODY')
         pairings = [Table(nobody, nobody)]
 
-        if len(self.players[1:]) % 2 == 0:
+        if len([x for x in self.players[1:] if x.status == 'active']) % 2 == 0:
             plist = [x for x in self.players[1:] if x.status == 'active']
         else:
             plist = [x for x in self.players[:] if x.status == 'active']
