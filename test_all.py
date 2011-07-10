@@ -122,13 +122,13 @@ for y in xrange(3):
         print x
     print
 
-    EVENT.report_match(1,2,0)
-    EVENT.report_match(2,1,1)
-    EVENT.report_match(3,2,1)
+    EVENT.report_match(1, 2, 0)
+    EVENT.report_match(2, 1, 1)
+    EVENT.report_match(3, 2, 1)
 
     # drop player 8 after the first round
     if y == 0:
-        EVENT.report_match(4,0,2)
+        EVENT.report_match(4, 0, 2)
         EVENT.players[7].set_status('drop')
 
     EVENT.finish_round()
@@ -152,10 +152,10 @@ for x in xrange(8):
     EVENT3.add_player(Player(PF_NAMES[x], PL_NAMES[x]))
 
 EVENT3.start_round()
-EVENT3.report_match(1,2,0)
-EVENT3.report_match(2,0,2)
-EVENT3.report_match(3,2,1)
-EVENT3.report_match(4,1,2)
+EVENT3.report_match(1, 2, 0)
+EVENT3.report_match(2, 0, 2)
+EVENT3.report_match(3, 2, 1)
+EVENT3.report_match(4, 1, 2)
 EVENT3.finish_round()
 EVENT3.start_round()
 
