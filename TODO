@@ -1,11 +1,7 @@
 * further cleanup of output from both player and tournament modules
 * improve error handling
-* create top-n / single elimination bracket scheduling
-    - DCI top8 : 1-8 4-5 3-6 2-7
-    - top4?    : 1-4 3-2
 * improve the console parsing
 * user bulletproofing
-* players need a 'drop' state (probably others too)
 * draft pod tracking
 * optional "don't play the same guy twice" scheduling
 * time between rounds for dropping players
