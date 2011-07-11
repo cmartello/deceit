@@ -112,8 +112,11 @@ class Player:
         if len(self.opponents) == 0:
             return 1.0 / 3
 
-        return sum([x[0].match_win_percent() for x in self.opponents])\
-            / len(self.opponents)
+        # create a list of non-bye opponents
+        opps = [x[0] for x in self.opponents if x[0].firstname != 'BYE']
+
+        # calculate and return the value
+        return sum([x.match_win_percent() for x in opps]) / len(opps)
 
     def opp_game_win_percent(self):
         """Returns the average of this player's opponent's game-win
@@ -123,8 +126,11 @@ class Player:
         if len(self.opponents) == 0:
             return 1.0 / 3
 
-        return sum([x[0].game_win_percent() for x in self.opponents])\
-            / len(self.opponents)
+        # create a list of non-bye opponents
+        opps = [x[0] for x in self.opponents if x[0].firstname != 'BYE']
+
+        # calculate and return the value
+        return sum([x.game_win_percent() for x in opps]) / len(opps)
 
     def set_status(self, status='drop'):
         """Changes the player's status from 'active' to something else.
