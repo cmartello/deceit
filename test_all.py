@@ -138,7 +138,7 @@ for x in EVENT.top_players():
     print x
 
 # create a round-robin schedule
-EVENT2 = Tournament.Tournament('Test for Round Robin', pairing='round')
+EVENT2 = Tournament.Tournament('Test for Round Robin', pairing='robin')
 
 for x in xrange(8):
     EVENT2.add_player(Player(PF_NAMES[x], PL_NAMES[x]))
@@ -161,15 +161,21 @@ EVENT3.start_round()
 
 # do a round of single-elimination with four players, seeded
 EVENT4 = Tournament.Tournament('Single-elimination test 2', pairing='single')
+print 'Event 4 pairing:',EVENT4.pairing
 
 for x in [x for x in EVENT3.players[1:] if x.status == 'active']:
     EVENT4.add_player(x)
 
 EVENT4.start_round()
 
-EVENT5 = Tournament.Tournament('Round-robin with byes', pairing='round')
+EVENT5 = Tournament.Tournament('Round-robin with byes', pairing='robin')
+print 'Event 5 pairing:',EVENT5.pairing
+
 
 for x in xrange(7):
     EVENT5.add_player(Player(PF_NAMES[x], PL_NAMES[x]))
 
 EVENT5.start_round()
+
+# create an event with an invalid pairing method
+EVENT6 = Tournament.Tournament('Invalid', pairing='foobarbaz')

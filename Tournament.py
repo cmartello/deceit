@@ -104,7 +104,12 @@ class Tournament:
         self.players = [Player('BYE', 'BYE')]
         self.round = 0
         self.tables = ['Nothing']
-        self.pairing = pairing
+        if pairing in ['swiss', 'robin', 'single']:
+            self.pairing = pairing
+        elif pairing not in ['swiss', 'robin', 'single']:
+            print "*** Bad pairing type %s indicated!" % (pairing)
+            print "*** Defaulting to swiss!"
+            self.pairing = 'swiss'
 
     def add_player(self, u_player):
         """Adds a player object to the tournament's list of players."""
@@ -132,7 +137,7 @@ class Tournament:
         if len(tables) > 0:
             return tables
 
-        if self.round == 0 and self.pairing == 'round':
+        if self.round == 0 and self.pairing == 'robin':
             # create complete tournament schedule
             self.round_schedule()
 
@@ -151,6 +156,7 @@ class Tournament:
         nobody = Player('NOBODY', 'NOBODY')
 
         # if we need a bye player, make sure we've got one
+        # TODO - this is counter-intuitive!
         if len(self.players) % 2 == 0:
             players = self.players[:]
         elif len(self.players) % 2 == 1:
@@ -204,7 +210,7 @@ class Tournament:
 
         pairings = [Table(nobody, nobody)]
 
-        num_players = len([x for x in self.players[1:] if x.status == 'active'])
+        num_players = len(self.active_players())
 
         seed = seed or self.round == 0
 
@@ -232,8 +238,7 @@ class Tournament:
 
         # less trivial: create ordered pairings per DCI floor rules
         elif seed == True:
-            players = sorted([x for x in self.players[1:] if \
-                x.status == 'active'], tiebreaker_sort)
+            players = sorted(self.active_players(), tiebreaker_sort)
 
             if num_players == 8:
                 pairings.append(Table(players[0], players[7]))
@@ -259,10 +264,10 @@ class Tournament:
         nobody = Player('NOBODY', 'NOBODY')
         pairings = [Table(nobody, nobody)]
 
-        if len([x for x in self.players[1:] if x.status == 'active']) % 2 == 0:
-            plist = [x for x in self.players[1:] if x.status == 'active']
+        if len(self.active_players()) % 2 == 0:
+            plist = self.active_players()
         else:
-            plist = [x for x in self.players[:] if x.status == 'active']
+            plist = [self.players[0]] + self.active_players()
         shuffle(plist)
         plist.sort(point_sort)
         while len(plist) > 1:
@@ -277,6 +282,11 @@ class Tournament:
         if self.round < 1:
             return -1
         self.tables[self.round][tableno].report_match(wins, losses, draws)
+
+    def active_players(self):
+        """Returns a list of active and real (ie, non-bye) players."""
+
+        return [x for x in self.players[1:] if x.status == 'active']
 
     def top_players(self, players=8):
         """Performs a tiebreaker and returns the top n players where n is
