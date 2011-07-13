@@ -155,12 +155,14 @@ class Tournament:
         # dummy player for table 0
         nobody = Player('NOBODY', 'NOBODY')
 
-        # if we need a bye player, make sure we've got one
-        # TODO - this is counter-intuitive!
-        if len(self.players) % 2 == 0:
-            players = self.players[:]
-        elif len(self.players) % 2 == 1:
-            players = self.players[1:]
+        # if there's an odd number of players, copy the bye player
+        aplayers = self.active_players()
+        if len(aplayers) % 2 == 1:
+            players = [self.players[0]] + aplayers
+
+        # otherwise, just keep the active players
+        elif len(aplayers) % 2 == 0:
+            players = aplayers
 
         # Rough description of round-robin scheduling method:
         # A list of players is generated and folded at the midway point,

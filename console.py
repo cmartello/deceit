@@ -27,8 +27,7 @@ def list_standings(tournament, byscore=False):
 
 def list_tables(tournament, showall=False):
     """Lists the tables that are still playing in the event.  If all
-    is True, it will instead list all tables.
-    Deprecated -- Will be moved to console UI."""
+    is True, it will instead list all tables."""
 
     if tournament.round < 1:
         return -1
@@ -44,8 +43,7 @@ def list_tables(tournament, showall=False):
 
 def list_pairings(tournament):
     """Prints out a list of all pairings with tables duplicated so that
-    players can find their proper table easier.
-    Deprecated -- Will be moved to console UI."""
+    players can find their proper table easier."""
 
     atables = tournament.tables[tournament.round][1:]
     btables = [atables[x].inverse_copy() for x in xrange(len(atables))]
@@ -70,7 +68,6 @@ def get_event_info():
     while regnum == -1:
         regnum = int(raw_input('registration # (0 for none)->'))
 
-    # TODO - automatically add the year and month to the registration number
     return (name, regnum)
 
 
@@ -78,8 +75,7 @@ def get_players(sanctioned=False):
     """Query the user for a list of players by name and PIN.  Only ask for
     their PIN if the match is offically sanctioned.
     Again, there is no user-proofing here.
-    TODO - make this work with a Tournament object passed to it.
-    TODO - user-proof the input."""
+    TODO - make this work with a Tournament object passed to it."""
 
     print 'Enter player names below (blank line to stop)'
 
